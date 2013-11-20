@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Frogger
 {
-    class Program
+    class Player
     {
-        static void Main(string[] args)
+        public void run()
         {
-
+            //run function
         }
     }
 }

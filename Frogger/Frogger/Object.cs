@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Frogger
 {
-    class Program
+    //Base Object class for most things with sprites in the game
+    class Object
     {
-        static void Main(string[] args)
-        {
-
-        }
     }
 }
