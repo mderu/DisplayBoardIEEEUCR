@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Frogger
+namespace frogger
 {
-    //Base Object class for most things with sprites in the game
     class Object
     {
+        public Object()
+        {
+        }
+
+        public override void update()
+        {
+        }
+
     }
 }
