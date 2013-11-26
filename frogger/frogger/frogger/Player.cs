@@ -15,11 +15,14 @@ namespace frogger
 {
     class Player : Object
     {
-        Player(Vector2 position) : base(position)
+        public Player(Vector2 position) : base(position)
         {
         }
 
         //player update should take kinect input
+        public override void update()
+        {
+        }
     }
 
 

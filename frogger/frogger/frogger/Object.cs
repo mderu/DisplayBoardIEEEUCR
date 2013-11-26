@@ -27,7 +27,7 @@ namespace frogger
             this.sprite = content.Load<Texture2D>("placeholder");
         }
 
-        public void update()
+        public virtual void update()
         {
         }
         //draw call

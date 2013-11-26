@@ -19,7 +19,9 @@ namespace frogger
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Object obj;
+        
+        List<Object> allObjects;
+        Player player;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -27,7 +29,9 @@ namespace frogger
             graphics.PreferredBackBufferHeight = 600;
             
             Content.RootDirectory = "Content";
-            obj = new Object(new Vector2(0,0));
+            allObjects = new List<Object>();
+            allObjects.Add(new Object(new Vector2(0,0)));
+			player = new Player(new Vector2(200,100));
         }
 
         /// <summary>
@@ -53,8 +57,11 @@ namespace frogger
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-
-            obj.loadContent(this.Content, "test");
+            for (int i = 0; i < allObjects.Count; i++)
+            {
+                allObjects[i].loadContent(this.Content, "test");
+            }
+            player.loadContent(this.Content, "test");
         }
 
         /// <summary>
@@ -78,7 +85,11 @@ namespace frogger
                 this.Exit();
 
             // TODO: Add your update logic here
-
+            for (int i = 0; i < allObjects.Count; i++)
+			{
+				allObjects[i].update();
+			}
+            player.update();
             base.Update(gameTime);
         }
 
@@ -92,7 +103,11 @@ namespace frogger
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            obj.draw(spriteBatch);
+            for (int i = 0; i < allObjects.Count; i++)
+            {
+                allObjects[i].draw(this.spriteBatch);
+            }
+            player.draw(this.spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
 
