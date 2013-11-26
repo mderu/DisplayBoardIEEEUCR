@@ -22,6 +22,11 @@ namespace frogger
         //player update should take kinect input
         public override void update()
         {
+            KeyboardState kb = Keyboard.GetState();
+            if (kb.IsKeyDown(Keys.A))
+            {
+                position.X -= 5;
+            }
         }
     }
 
