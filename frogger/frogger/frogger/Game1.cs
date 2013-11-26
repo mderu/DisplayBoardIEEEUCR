@@ -19,7 +19,7 @@ namespace frogger
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        Object obj;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -27,8 +27,7 @@ namespace frogger
             graphics.PreferredBackBufferHeight = 600;
             
             Content.RootDirectory = "Content";
-            Object obj;
-            
+            obj = new Object(new Vector2(0,0));
         }
 
         /// <summary>
@@ -54,6 +53,8 @@ namespace frogger
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            obj.loadContent(this.Content, "test");
         }
 
         /// <summary>
@@ -90,8 +91,13 @@ namespace frogger
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            obj.draw(spriteBatch);
+            spriteBatch.End();
             base.Draw(gameTime);
+
         }
+
+        
     }
 }

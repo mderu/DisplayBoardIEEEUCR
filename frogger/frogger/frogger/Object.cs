@@ -17,19 +17,32 @@ namespace frogger
         protected Vector2 position;
         
         protected Texture2D sprite;
-        public Object()
+        public Object(Vector2 position)
         {
-            position = new Vector2(50, 50);
+            this.position = position;
         }
         //class to load content from the main game class
-        public void LoadContent(ContentManager content, string asset)
+        public void loadContent(ContentManager content, string asset)
         {
-            this.sprite = content.Load<Texture2D>("content/placeholder.png");
+            this.sprite = content.Load<Texture2D>("placeholder");
         }
 
         public void update()
         {
         }
-
+        //draw call
+        public void draw(SpriteBatch batch)
+        {
+            batch.Draw(sprite, position, Color.White);
+        }
+        //return position
+        public Vector2 getPosition()
+        {
+            return position;
+        }
+        public void setPosition(Vector2 newPosition)
+        {
+            position = newPosition;
+        }
     }
 }
