@@ -17,21 +17,30 @@ namespace frogger
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        static Dictionary<string, Texture2D> sprites;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        public static Random rand;
         
-        List<Object> allObjects;
+        List<Row> allRows;
         Player player;
+
+        public const int width = 800;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferWidth = width;
             graphics.PreferredBackBufferHeight = 600;
-            
+
             Content.RootDirectory = "Content";
-            allObjects = new List<Object>();
-            allObjects.Add(new Object(new Vector2(0,0)));
-			player = new Player(new Vector2(200,100));
+            rand = new Random();
+            sprites = new Dictionary<string, Texture2D>();
+
+            allRows = new List<Row>();
+            allRows.Add(new Row(0,2));
+
+            player = new Player(new Vector2(200, 100));
         }
 
         /// <summary>
@@ -56,12 +65,9 @@ namespace frogger
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-            for (int i = 0; i < allObjects.Count; i++)
-            {
-                allObjects[i].loadContent(this.Content, "test");
-            }
-            player.loadContent(this.Content, "test");
+            sprites.Add("placeholder", this.Content.Load<Texture2D>("placeholder"));
+            player.setSprite("placeholder");
+            //player.loadContent(this.Content, "test");
         }
 
         /// <summary>
@@ -80,16 +86,23 @@ namespace frogger
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
-            for (int i = 0; i < allObjects.Count; i++)
-			{
-				allObjects[i].update();
-			}
-            player.update();
+            for (int i = 0; i < allRows.Count; i++)
+            {
+                /*
+                for (int j = 0; j < allRows[i].objects.Count; j++)
+                {
+                    allRows[i].objects[j].update(elapsedTime);
+                }
+                */
+                allRows[i].update(elapsedTime);
+            }
+            player.update(elapsedTime);
             base.Update(gameTime);
         }
 
@@ -103,9 +116,12 @@ namespace frogger
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            for (int i = 0; i < allObjects.Count; i++)
+            for (int i = 0; i < allRows.Count; i++)
             {
-                allObjects[i].draw(this.spriteBatch);
+                for (int j = 0; j < allRows[i].objects.Count; j++)
+                {
+                    allRows[i].objects[j].draw(this.spriteBatch);
+                }
             }
             player.draw(this.spriteBatch);
             spriteBatch.End();
@@ -113,6 +129,26 @@ namespace frogger
 
         }
 
-        
+        /// <summary>
+        /// Used for giving several classes access to the width
+        /// of the screen.
+        /// </summary>
+        /// <returns>Returns the width of the screen</returns>
+        public static int getWidth()
+        {
+            return width;
+        }
+        /// <summary>
+        /// The bread and butter of our graphics drawings. Instead of
+        /// letting each object load in it's own Texture2D, all of them
+        /// are saved in the static "sprites" map. When objects need to
+        /// be drawn they get their sprite from here.
+        /// </summary>
+        /// <param name="s">The key to the mapped sprite.</param>
+        /// <returns>The sprite mapped at the key.</returns>
+        public static Texture2D getSprite(string s)
+        {
+            return sprites[s];
+        }
     }
 }

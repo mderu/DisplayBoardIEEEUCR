@@ -13,14 +13,15 @@ using Microsoft.Xna.Framework.Media;
 
 namespace frogger
 {
-    class Player : Object
+    class Player : frogger.Object
     {
         public Player(Vector2 position) : base(position)
         {
         }
 
         //player update should take kinect input
-        public override void update()
+        
+        public override void update(float time = .01666f)
         {
             KeyboardState kb = Keyboard.GetState();
             if (kb.IsKeyDown(Keys.A))
