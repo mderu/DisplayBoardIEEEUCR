@@ -14,6 +14,7 @@ namespace frogger
 {
     class Object
     {
+        static public List<Object> allObjects;
         protected Vector2 position;
 
         //It's cool that they don't have heights and all, because
@@ -25,11 +26,13 @@ namespace frogger
         public Object(Vector2 position)
         {
             this.position = position;
+            allObjects.Add(this);
         }
         //Added for convience
         public Object(int x, int y, int w = 64)
         {
             this.position = new Vector2(x, y);
+            allObjects.Add(this);
         }
 
         //class to load content from the main game class
@@ -50,7 +53,7 @@ namespace frogger
 
         public virtual void update(float time = .01666f)
         {
-
+            //we can check collisions here
         }
         public virtual void moveBy(int mX = 0, int mY = 0)
         {

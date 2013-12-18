@@ -23,11 +23,22 @@ namespace frogger
         
         public override void update(float time = .01666f)
         {
+            //use keyboard input until we get kinect workin
+            //W and S move between rows
             KeyboardState kb = Keyboard.GetState();
             if (kb.IsKeyDown(Keys.A))
             {
                 position.X -= 5;
             }
+            else if(kb.IsKeyDown(Keys.D))
+            {
+                position.X += 5;
+            }
+            if (kb.IsKeyDown(Keys.W))
+            {
+                //make sure we assign player to a different row here
+            }
+
         }
     }
 

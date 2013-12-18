@@ -27,11 +27,16 @@ namespace frogger
         Player player;
 
         public const int width = 800;
+        public const int height = 600;
         public Game1()
         {
+            //make sure we initialize a static field first......
+            frogger.Object.allObjects = new List<Object>();
+
+
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = width;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferHeight = height;
 
             Content.RootDirectory = "Content";
             rand = new Random();
@@ -39,8 +44,9 @@ namespace frogger
 
             allRows = new List<Row>();
             allRows.Add(new Row(0,2));
-
-            player = new Player(new Vector2(200, 100));
+			allRows.Add(new Row(64, 1));
+			//put the player at the bottom of the screen
+            player = new Player(new Vector2(200, (height-64)));
         }
 
         /// <summary>
