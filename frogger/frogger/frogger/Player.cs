@@ -25,6 +25,7 @@ namespace frogger
         {
             //use keyboard input until we get kinect workin
             //W and S move between rows
+            
             KeyboardState kb = Keyboard.GetState();
             if (kb.IsKeyDown(Keys.A))
             {
@@ -36,7 +37,7 @@ namespace frogger
             }
             if (kb.IsKeyDown(Keys.W))
             {
-                //make sure we assign player to a different row here
+                //make sure player can only go row by row
             }
 
         }

@@ -5,10 +5,12 @@ using Microsoft.Xna.Framework;
 
 namespace frogger
 {
+
     public enum Spawns { GATOR, CAR, LOG }
     class Row : frogger.Object
     {
         public List<Object> objects;
+        public static List<Row> allRows;
         //in pixels per update (1/60th a second)
         int speed;
         bool isWater;
@@ -20,6 +22,11 @@ namespace frogger
             objects[objects.Count - 1].setSprite("placeholder");
             this.speed = speed;
             isWater = agua;
+            if (isWater)
+            {
+                //need to setup like
+                //water tiles
+            }
         }
         private void addObject()
         {

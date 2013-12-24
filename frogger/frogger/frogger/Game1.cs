@@ -23,7 +23,7 @@ namespace frogger
         SpriteBatch spriteBatch;
         public static Random rand;
         
-        List<Row> allRows;
+
         Player player;
 
         public const int width = 800;
@@ -42,9 +42,10 @@ namespace frogger
             rand = new Random();
             sprites = new Dictionary<string, Texture2D>();
 
-            allRows = new List<Row>();
-            allRows.Add(new Row(0,2));
-			allRows.Add(new Row(64, 1));
+            Row.allRows = new List<Row>();
+            Row.allRows.Add(new Row(0,2));
+			Row.allRows.Add(new Row(64, 2));
+            Row.allRows.Add(new Row(128, 1));
 			//put the player at the bottom of the screen
             player = new Player(new Vector2(200, (height-64)));
         }
@@ -98,7 +99,7 @@ namespace frogger
                 this.Exit();
 
             // TODO: Add your update logic here
-            for (int i = 0; i < allRows.Count; i++)
+            for (int i = 0; i < Row.allRows.Count; i++)
             {
                 /*
                 for (int j = 0; j < allRows[i].objects.Count; j++)
@@ -106,7 +107,7 @@ namespace frogger
                     allRows[i].objects[j].update(elapsedTime);
                 }
                 */
-                allRows[i].update(elapsedTime);
+                Row.allRows[i].update(elapsedTime);
             }
             player.update(elapsedTime);
             base.Update(gameTime);
@@ -122,11 +123,11 @@ namespace frogger
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            for (int i = 0; i < allRows.Count; i++)
+            for (int i = 0; i < Row.allRows.Count; i++)
             {
-                for (int j = 0; j < allRows[i].objects.Count; j++)
+                for (int j = 0; j < Row.allRows[i].objects.Count; j++)
                 {
-                    allRows[i].objects[j].draw(this.spriteBatch);
+                    Row.allRows[i].objects[j].draw(this.spriteBatch);
                 }
             }
             player.draw(this.spriteBatch);
