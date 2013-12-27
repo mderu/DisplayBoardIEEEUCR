@@ -15,8 +15,10 @@ namespace frogger
 {
     class Player : frogger.Object
     {
+        protected bool wKeyUp;
         public Player(Vector2 position) : base(position)
         {
+            wKeyUp = true;
         }
 
         //player update should take kinect input
@@ -35,9 +37,16 @@ namespace frogger
             {
                 position.X += 5;
             }
-            if (kb.IsKeyDown(Keys.W))
+            if (kb.IsKeyDown(Keys.W) && wKeyUp)
             {
                 //make sure player can only go row by row
+                //64 pixel increments
+                position.Y -= 64;
+                wKeyUp = false;
+            }
+            else if (kb.IsKeyUp(Keys.W))
+            {
+                wKeyUp = true;
             }
 
         }

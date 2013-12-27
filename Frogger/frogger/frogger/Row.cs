@@ -87,5 +87,17 @@ namespace frogger
             }
         }
 
+        //A function that is designed to see if an object is currently part of the row 
+        //as virtue of y positions
+        public bool objectInRow(Object obj)
+        {
+            //really meant to be used by a player
+            if (obj.getPosition().Y == getPosition().Y)
+            {
+                return true;
+            }
+            return false;
+        }
+
     }
 }
