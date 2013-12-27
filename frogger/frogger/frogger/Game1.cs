@@ -47,8 +47,9 @@ namespace frogger
 			Row.allRows.Add(new Row(64, 2));
             Row.allRows.Add(new Row(128, 1));
 			//put the player at the bottom of the screen
-            player = new Player(new Vector2(200, (height-64)));
+            player = new Player(new Vector2(200, 256));
         }
+
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.

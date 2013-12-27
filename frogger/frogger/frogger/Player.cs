@@ -27,7 +27,13 @@ namespace frogger
         {
             //use keyboard input until we get kinect workin
             //W and S move between rows
-            
+            for (int i = 0; i < Row.allRows.Count; i++)
+            {
+                if (Row.allRows[i].objectInRow(this))
+                {
+                    this.moveBy(Row.allRows[i].getSpeed() * (int)(time * 60f), 0);
+                }
+            }
             KeyboardState kb = Keyboard.GetState();
             if (kb.IsKeyDown(Keys.A))
             {

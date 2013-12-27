@@ -99,5 +99,11 @@ namespace frogger
             return false;
         }
 
+        //some return funciotns
+        public int getSpeed()
+        {
+            return speed;
+        }
+
     }
 }
