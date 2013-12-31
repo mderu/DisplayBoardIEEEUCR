@@ -11,6 +11,7 @@ namespace frogger
     {
         public List<Object> objects;
         public static List<Row> allRows;
+        
         //in pixels per update (1/60th a second)
         int speed;
         bool isWater;
@@ -19,6 +20,7 @@ namespace frogger
         {
             objects = new List<Object>();
             objects.Add(new Object(new Vector2(0, y)));
+            allRows.Add(this);
             objects[objects.Count - 1].setSprite("placeholder");
             this.speed = speed;
             isWater = agua;

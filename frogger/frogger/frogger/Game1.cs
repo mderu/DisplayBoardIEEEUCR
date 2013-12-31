@@ -43,9 +43,9 @@ namespace frogger
             sprites = new Dictionary<string, Texture2D>();
 
             Row.allRows = new List<Row>();
-            Row.allRows.Add(new Row(0,2));
-			Row.allRows.Add(new Row(64, 2));
-            Row.allRows.Add(new Row(128, 1));
+            new Row(0,2);
+			new Row(64, 2);
+            new Row(128, 1);
 			//put the player at the bottom of the screen
             player = new Player(new Vector2(200, 256));
         }
