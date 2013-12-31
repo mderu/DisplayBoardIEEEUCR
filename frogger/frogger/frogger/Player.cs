@@ -16,13 +16,14 @@ namespace frogger
     class Player : frogger.Object
     {
         protected bool wKeyUp;
-        public Player(Vector2 position) : base(position)
+        public Player(Vector2 position)
+            : base(position)
         {
             wKeyUp = true;
         }
 
         //player update should take kinect input
-        
+
         public override void update(float time = .01666f)
         {
             //use keyboard input until we get kinect workin
@@ -31,7 +32,66 @@ namespace frogger
             {
                 if (Row.allRows[i].objectInRow(this))
                 {
-                    this.moveBy(Row.allRows[i].getSpeed() * (int)(time * 60f), 0);
+                    bool hitObject = false;
+                    for (int j = 0; j < Row.allRows[i].objects.Count(); j++ )
+                    {
+                        //This isn't entirely copy pasta, I had to change conditions slightly
+                        //It also adds in a failsafe if we want to be lazy.
+                        //We can spawn logs in one after the other, making it look like a
+                        //continuous, long log, and frogger is capable of walking across them.
+                        if (Row.allRows[i].isWater() &&
+                                ( (Row.allRows[i].objects[j].getPosition().X <= position.X + 32 &&
+                                 position.X + 32 <= Row.allRows[i].objects[j].getPosition().X 
+                                                    + Row.allRows[i].objects[j].getWidth()) 
+                                     ||
+                                    (
+                                        Row.allRows[i].objects[j].getPosition().X <= position.X &&
+                                        Row.allRows[i].objects[j].getPosition().X 
+                                                + Row.allRows[i].objects[j].getWidth() >= position.X 
+                                         &&
+                                        (j + 1 < Row.allRows[i].objects.Count() &&
+                                        (Row.allRows[i].objects[j + 1].getPosition().X <= position.X + getWidth()
+                                         && position.X + getWidth() < Row.allRows[i].objects[j + 1].getPosition().X 
+                                                                    + Row.allRows[i].objects[j + 1].getWidth()) ||
+                                         (j-1 > 0 &&
+                                        (Row.allRows[i].objects[j - 1].getPosition().X <= position.X + getWidth()
+                                         && position.X + getWidth() < Row.allRows[i].objects[j - 1].getPosition().X 
+                                                                    + Row.allRows[i].objects[j - 1].getWidth())))
+                                    )
+                                )
+                            )
+
+                        {
+                            hitObject = true;
+                            break;
+                        }
+                        else if (!Row.allRows[i].isWater() && 
+                                ((Row.allRows[i].objects[j].getPosition().X <= position.X + 5 &&
+                                position.X + 5 <= Row.allRows[i].objects[j].getPosition().X
+                                                    + Row.allRows[i].objects[j].getWidth()) ||
+                                (Row.allRows[i].objects[j].getPosition().X <= position.X + 59 &&
+                                position.X + 59 <= Row.allRows[i].objects[j].getPosition().X
+                                                    + Row.allRows[i].objects[j].getWidth()))
+                            )
+                        {
+                            //if !water, then they just hit a car.
+                            //Which is bad, so set game over
+                            position.Y += 64*5;
+                            hitObject = true;
+                            break;
+                        }
+                    }
+                    if (!hitObject && Row.allRows[i].isWater())
+                    {
+                        //If they did not hit an object and the row is water
+                        //they just lost, because a frog that lived his whole
+                        //tadpole life in water is unable to swim.
+                        position.Y += 64*5;
+                    }
+                    if (Row.allRows[i].isWater())
+                    {
+                        this.moveBy(Row.allRows[i].getSpeed() * (int)(time * 60f), 0);
+                    }
                 }
             }
             KeyboardState kb = Keyboard.GetState();
@@ -60,3 +120,4 @@ namespace frogger
 
 
 }
+

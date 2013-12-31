@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -43,9 +43,10 @@ namespace frogger
             sprites = new Dictionary<string, Texture2D>();
 
             Row.allRows = new List<Row>();
-            new Row(0,2);
-			new Row(64, 2);
-            new Row(128, 1);
+            new Row(64*0, 2.5f);
+			new Row(64*1, 2);
+            new Row(64*2, 1.5f);
+            new Row(64 * 3, 1, Spawns.LOG);
 			//put the player at the bottom of the screen
             player = new Player(new Vector2(200, 256));
         }

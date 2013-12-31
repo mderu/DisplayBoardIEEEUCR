@@ -55,7 +55,7 @@ namespace frogger
         {
             //we can check collisions here
         }
-        public virtual void moveBy(int mX = 0, int mY = 0)
+        public virtual void moveBy(float mX = 0, float mY = 0)
         {
             position.X = position.X + mX;
             position.Y = position.Y + mY;
