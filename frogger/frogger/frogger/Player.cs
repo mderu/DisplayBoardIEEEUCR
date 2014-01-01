@@ -39,22 +39,10 @@ namespace frogger
                         //It also adds in a failsafe if we want to be lazy.
                         //We can spawn logs in one after the other, making it look like a
                         //continuous, long log, and frogger is capable of walking across them.
-                        if (Row.allRows[i].isWater() &&
-                                ( (Row.allRows[i].objects[j].getCollisionWithObject(position)) 
-                                     ||
-                                    (
-                                        Row.allRows[i].objects[j].getPosition().X <= position.X &&
-                                        Row.allRows[i].objects[j].getPosition().X 
-                                                + Row.allRows[i].objects[j].getWidth() >= position.X 
-                                         &&
-                                        (j + 1 < Row.allRows[i].objects.Count() &&
-                                        (Row.allRows[i].objects[j + 1].getPosition().X <= position.X + getWidth()
-                                         && position.X + getWidth() < Row.allRows[i].objects[j + 1].getPosition().X 
-                                                                    + Row.allRows[i].objects[j + 1].getWidth()) ||
-                                         (j-1 > 0 &&
-                                        (Row.allRows[i].objects[j - 1].getPosition().X <= position.X + getWidth()
-                                         && position.X + getWidth() < Row.allRows[i].objects[j - 1].getPosition().X 
-                                                                    + Row.allRows[i].objects[j - 1].getWidth())))
+                        if (Row.allRows[i].isWater() && (Row.allRows[i].objects[j].getCollisionWithObjectTolerances(position, 32) ||
+                                    (Row.allRows[i].objects[j].getCollisionWithObject(position) && 
+                                    (j + 1 < Row.allRows[i].objects.Count() && (Row.allRows[i].objects[j + 1].getCollisionWithObject(position)) ||
+                                         (j-1 > 0 && (Row.allRows[i].objects[j - 1].getCollisionWithObject(position))))
                                     )
                                 )
                             )
@@ -64,12 +52,8 @@ namespace frogger
                             break;
                         }
                         else if (!Row.allRows[i].isWater() && 
-                                ((Row.allRows[i].objects[j].getPosition().X <= position.X + 5 &&
-                                position.X + 5 <= Row.allRows[i].objects[j].getPosition().X
-                                                    + Row.allRows[i].objects[j].getWidth()) ||
-                                (Row.allRows[i].objects[j].getPosition().X <= position.X + 59 &&
-                                position.X + 59 <= Row.allRows[i].objects[j].getPosition().X
-                                                    + Row.allRows[i].objects[j].getWidth()))
+                                ((Row.allRows[i].objects[j].getCollisionWithObjectTolerances(position,5)) ||
+                                (Row.allRows[i].objects[j].getCollisionWithObjectTolerances(position, 59)))
                             )
                         {
                             //if !water, then they just hit a car.

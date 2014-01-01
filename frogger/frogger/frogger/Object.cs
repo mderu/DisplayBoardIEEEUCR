@@ -74,9 +74,15 @@ namespace frogger
         {
             position = newPosition;
         }
+        //simple bounding box collision
         public bool getCollisionWithObject(Vector2 newPosition)
         {
-            return (position.X <= newPosition.X + 32 && newPosition.X + 32 <= position.X + getWidth());
+            return (position.X <= newPosition.X && position.X + getWidth() >= newPosition.X);
+        }
+        //we include tolerances with the collision checking so we can make it easier 
+        public bool getCollisionWithObjectTolerances(Vector2 newPosition, int tolerance)
+        {
+            return (position.X <= newPosition.X + tolerance && newPosition.X + tolerance <= position.X + getWidth());
         }
         public int getWidth()
         {
