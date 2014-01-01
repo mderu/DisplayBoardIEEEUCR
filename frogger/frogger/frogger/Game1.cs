@@ -18,6 +18,7 @@ namespace frogger
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         static Dictionary<string, Texture2D> sprites;
+        static SpriteFont font;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Random rand;
@@ -42,7 +43,7 @@ namespace frogger
             Content.RootDirectory = "Content";
             rand = new Random();
             sprites = new Dictionary<string, Texture2D>();
-
+            
             Row.allRows = new List<Row>();
             new Row(64*0, 2.5f);
             new Row(64*1, 2);
@@ -81,7 +82,7 @@ namespace frogger
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            font = Content.Load<SpriteFont>("Segoe");
             sprites.Add("placeholder", this.Content.Load<Texture2D>("placeholder"));
             sprites.Add("road", this.Content.Load<Texture2D>("road"));
             sprites.Add("water", this.Content.Load<Texture2D>("water"));
@@ -151,9 +152,13 @@ namespace frogger
                 Row.allRows[i].drawRow(this.spriteBatch);
             }
             player.draw(this.spriteBatch);
+            //draw score and lives
+            //use the difference at the bottom of the screen for this
+            spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, (height-30)), Color.Red);
+            spriteBatch.DrawString(font, "Lives Remaining: " + lives, new Vector2(200, (height-30)), Color.Red);
             spriteBatch.End();
             base.Draw(gameTime);
-
+            
         }
 
         /// <summary>
