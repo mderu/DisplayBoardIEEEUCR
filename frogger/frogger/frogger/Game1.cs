@@ -75,6 +75,7 @@ namespace frogger
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             sprites.Add("placeholder", this.Content.Load<Texture2D>("placeholder"));
+            sprites.Add("road", this.Content.Load<Texture2D>("road"));
             player.setSprite("placeholder");
             //player.loadContent(this.Content, "test");
         }
@@ -127,10 +128,7 @@ namespace frogger
             spriteBatch.Begin();
             for (int i = 0; i < Row.allRows.Count; i++)
             {
-                for (int j = 0; j < Row.allRows[i].objects.Count; j++)
-                {
-                    Row.allRows[i].objects[j].draw(this.spriteBatch);
-                }
+                Row.allRows[i].drawRow(this.spriteBatch);
             }
             player.draw(this.spriteBatch);
             spriteBatch.End();

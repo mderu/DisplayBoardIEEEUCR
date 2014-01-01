@@ -40,9 +40,7 @@ namespace frogger
                         //We can spawn logs in one after the other, making it look like a
                         //continuous, long log, and frogger is capable of walking across them.
                         if (Row.allRows[i].isWater() &&
-                                ( (Row.allRows[i].objects[j].getPosition().X <= position.X + 32 &&
-                                 position.X + 32 <= Row.allRows[i].objects[j].getPosition().X 
-                                                    + Row.allRows[i].objects[j].getWidth()) 
+                                ( (Row.allRows[i].objects[j].getCollisionWithObject(position)) 
                                      ||
                                     (
                                         Row.allRows[i].objects[j].getPosition().X <= position.X &&

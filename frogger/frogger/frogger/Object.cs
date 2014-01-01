@@ -74,6 +74,10 @@ namespace frogger
         {
             position = newPosition;
         }
+        public bool getCollisionWithObject(Vector2 newPosition)
+        {
+            return (position.X <= newPosition.X + 32 && newPosition.X + 32 <= position.X + getWidth());
+        }
         public int getWidth()
         {
             return Game1.getSprite(spriteKey).Width;

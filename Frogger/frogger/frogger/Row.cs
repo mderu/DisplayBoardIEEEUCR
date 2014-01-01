@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace frogger
 {
@@ -34,6 +35,7 @@ namespace frogger
                 objects.Add(new Object(i, y));
                 setObjectSprite();
             }
+
         }
         private void addObject()
         {
@@ -106,6 +108,24 @@ namespace frogger
                 return true;
             }
             return false;*/
+        }
+        public void drawRow(SpriteBatch batch)
+        {
+            //draw tile first
+            if (type == Spawns.CAR)
+            {
+                for (int i = 0; i < 13; i++)
+                {
+                    Vector2 p = position;
+                    p.X += 64 * i;
+                    batch.Draw(Game1.getSprite("road"), p, Color.White);
+                }
+            }
+            for (int i = 0; i < objects.Count; i++)
+            {
+                objects[i].draw(batch);
+            }
+            
         }
 
         //some return funciotns
