@@ -58,8 +58,8 @@ namespace frogger
                         {
                             //if !water, then they just hit a car.
                             //Which is bad, so set game over
-                            position.Y += 64*5;
                             hitObject = true;
+                            playerReset();
                             break;
                         }
                     }
@@ -97,6 +97,13 @@ namespace frogger
                 wKeyUp = true;
             }
 
+        }
+
+        public void playerReset()
+        {
+            //reset player position
+            position.Y += 64 * 5;
+            position.X = 200;
         }
     }
 

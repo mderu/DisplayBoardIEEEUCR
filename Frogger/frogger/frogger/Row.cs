@@ -121,6 +121,15 @@ namespace frogger
                     batch.Draw(Game1.getSprite("road"), p, Color.White);
                 }
             }
+            if (type == Spawns.LOG || type == Spawns.GATOR)
+            {
+                for (int i = 0; i < 13; i++)
+                {
+                    Vector2 p = position;
+                    p.X += 64 * i;
+                    batch.Draw(Game1.getSprite("water"), p, Color.White);
+                }
+            }
             for (int i = 0; i < objects.Count; i++)
             {
                 objects[i].draw(batch);

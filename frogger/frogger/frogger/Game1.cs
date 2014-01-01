@@ -18,16 +18,17 @@ namespace frogger
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         static Dictionary<string, Texture2D> sprites;
-
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Random rand;
         
 
         Player player;
-
+        int score;
+        int lives;
         public const int width = 800;
         public const int height = 600;
+        public const int startingLives = 5;
         public Game1()
         {
             //make sure we initialize a static field first......
@@ -44,11 +45,18 @@ namespace frogger
 
             Row.allRows = new List<Row>();
             new Row(64*0, 2.5f);
-			new Row(64*1, 2);
+            new Row(64*1, 2);
             new Row(64*2, 1.5f);
-            new Row(64 * 3, 1, Spawns.LOG);
-			//put the player at the bottom of the screen
+            new Row(64*3, 1, Spawns.LOG);
+            score = 0;
+            lives = startingLives;    
+            //put the player at the bottom of the screen
             player = new Player(new Vector2(200, 256));
+        }
+
+        public void generateNewLevel()
+        {
+            //generate a new starting level
         }
 
 
@@ -76,6 +84,7 @@ namespace frogger
 
             sprites.Add("placeholder", this.Content.Load<Texture2D>("placeholder"));
             sprites.Add("road", this.Content.Load<Texture2D>("road"));
+            sprites.Add("water", this.Content.Load<Texture2D>("water"));
             player.setSprite("placeholder");
             //player.loadContent(this.Content, "test");
         }
@@ -114,6 +123,17 @@ namespace frogger
             }
             player.update(elapsedTime);
             base.Update(gameTime);
+			//So here we should check if the player has reached a certain height
+            if (player.getPosition().Y > height / 2)
+            {
+                //shift everything downward and create a new row
+                //and delete the last row
+            }
+            if (player.getPosition().X > width)
+            {
+                //player just died
+                player.playerReset();
+            }
         }
 
         /// <summary>
