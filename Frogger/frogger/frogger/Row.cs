@@ -109,6 +109,15 @@ namespace frogger
             }
             return false;*/
         }
+        //we have to ovveride the setposition call so that objects are taken into accout
+        public override void setPosition(Vector2 newPosition)
+        {
+            position = newPosition;
+            for (int i = 0; i < objects.Count; i++)
+            {
+                objects[i].setPosition(objects[i].getPosition() + new Vector2(0, 64));
+            }
+        }
         public void drawRow(SpriteBatch batch)
         {
             //draw tile first

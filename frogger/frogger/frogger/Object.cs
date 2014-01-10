@@ -61,7 +61,7 @@ namespace frogger
             position.Y = position.Y + mY;
         }
         //draw call
-        public void draw(SpriteBatch batch)
+        public virtual void draw(SpriteBatch batch)
         {
             batch.Draw(Game1.getSprite(spriteKey), position, Color.White);
         }
@@ -70,7 +70,7 @@ namespace frogger
         {
             return position;
         }
-        public void setPosition(Vector2 newPosition)
+        public virtual void setPosition(Vector2 newPosition)
         {
             position = newPosition;
         }

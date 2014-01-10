@@ -125,10 +125,17 @@ namespace frogger
             player.update(elapsedTime);
             base.Update(gameTime);
 			//So here we should check if the player has reached a certain height
-            if (player.getPosition().Y > height / 2)
+            if (player.getPosition().Y < height / 2)
             {
                 //shift everything downward and create a new row
                 //and delete the last row
+                for (int i = 0; i < Row.allRows.Count; i++)
+                {
+                    Row.allRows[i].setPosition(Row.allRows[i].getPosition() + new Vector2(0, 64));             
+                }
+                player.setPosition(player.getPosition() + new Vector2(0, 64));
+                //randomly generate a row
+                new Row(0, 1 , Spawns.LOG);
             }
             if (player.getPosition().X > width)
             {
