@@ -39,7 +39,9 @@ namespace frogger
         }
         private void addObject()
         {
-            if ((speed > 0 && objects[objects.Count - 1].getPosition().X > 0)
+            if (objects.Count == 0
+                ||
+                (speed > 0 && objects[objects.Count - 1].getPosition().X > 0)
                 ||
                  (speed < 0 && objects[objects.Count - 1].getPosition().X + objects[objects.Count - 1].getWidth() > Game1.getWidth()))
             {
@@ -109,6 +111,7 @@ namespace frogger
             }
             return false;*/
         }
+
         //we have to ovveride the setposition call so that objects are taken into accout
         public override void setPosition(Vector2 newPosition)
         {
@@ -118,6 +121,7 @@ namespace frogger
                 objects[i].setPosition(objects[i].getPosition() + new Vector2(0, 64));
             }
         }
+
         public void drawRow(SpriteBatch batch)
         {
             //draw tile first
@@ -151,10 +155,12 @@ namespace frogger
         {
             return speed;
         }
+
         public bool isWater()
         {
             return type <= Spawns.LOG;
         }
+
         private void setObjectSprite()
         {
             switch (type)

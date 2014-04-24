@@ -16,10 +16,17 @@ namespace frogger
     class Player : frogger.Object
     {
         protected bool wKeyUp;
-        public Player(Vector2 position)
+        protected bool dead;
+        protected int lives;
+        protected int numSteps;
+
+        public Player(Vector2 position, int startingLives)
             : base(position)
         {
             wKeyUp = true;
+            dead = false;
+            numSteps = 0;
+            lives = startingLives;
         }
 
         //player update should take kinect input
@@ -59,7 +66,8 @@ namespace frogger
                             //if !water, then they just hit a car.
                             //Which is bad, so set game over
                             hitObject = true;
-                            playerReset();
+                            //playerReset();
+                            dead = true;
                             break;
                         }
                     }
@@ -68,7 +76,9 @@ namespace frogger
                         //If they did not hit an object and the row is water
                         //they just lost, because a frog that lived his whole
                         //tadpole life in water is unable to swim.
-                        position.Y += 64*5;
+                        //position.Y += 64*5;
+                        //playerReset();
+                        dead = true;
                     }
                     if (Row.allRows[i].isWater())
                     {
@@ -90,6 +100,7 @@ namespace frogger
                 //make sure player can only go row by row
                 //64 pixel increments
                 position.Y -= 64;
+                numSteps++;
                 wKeyUp = false;
             }
             else if (kb.IsKeyUp(Keys.W))
@@ -102,9 +113,28 @@ namespace frogger
         public void playerReset()
         {
             //reset player position
-            position.Y += 64 * 5;
+            position.Y = 64 * 5;
             position.X = 200;
+            lives--;
+            dead = false;
         }
+
+        public int getLives()
+        {
+            return lives;
+        }
+
+        public int getNumSteps()
+        {
+            return numSteps;
+        }
+
+        public bool isDead()
+        {
+            return dead;
+        }
+
+
     }
 
 

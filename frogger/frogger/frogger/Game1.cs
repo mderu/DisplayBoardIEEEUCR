@@ -22,19 +22,21 @@ namespace frogger
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Random rand;
+        private int top;
         
 
         Player player;
-        int score;
-        int lives;
         public const int width = 800;
         public const int height = 600;
         public const int startingLives = 5;
+        public const int startingX = 200;
+        public const int startingY = 256;
+        public const int MAX_SPEED = 3;
+
         public Game1()
         {
             //make sure we initialize a static field first......
             frogger.Object.allObjects = new List<Object>();
-
 
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = width;
@@ -43,21 +45,57 @@ namespace frogger
             Content.RootDirectory = "Content";
             rand = new Random();
             sprites = new Dictionary<string, Texture2D>();
+
+            generateNewLevel();
             
-            Row.allRows = new List<Row>();
-            new Row(64*0, 2.5f);
-            new Row(64*1, 2);
-            new Row(64*2, 1.5f);
-            new Row(64*3, 1, Spawns.LOG);
-            score = 0;
-            lives = startingLives;    
             //put the player at the bottom of the screen
-            player = new Player(new Vector2(200, 256));
+            player = new Player(new Vector2(startingX, startingY), startingLives);
         }
 
         public void generateNewLevel()
         {
+            
             //generate a new starting level
+            Row.allRows = new List<Row>();
+            //generateChunk();
+            new Row(64 * 0, 2.5f, Spawns.CAR);
+            new Row(64 * 1, 0.5f, Spawns.CAR);
+            new Row(64 * 2, -2.5f, Spawns.LOG);
+            new Row(64 * 3, 1.0f, Spawns.CAR);
+            top = 0;
+        }
+
+        public float getRandomSpeed()
+        {
+            Random rnd = new Random();
+            float speed = (float)((rnd.NextDouble() * (MAX_SPEED*2)) - MAX_SPEED);
+            return speed;
+        }
+
+        public void generateChunk()
+        {
+            Random rnd = new Random();
+            int type = rnd.Next(0, 3);
+            if (type == 0) //Generate stream
+            {
+                new Row(64 * (top-2), getRandomSpeed(), Spawns.LOG);
+                new Row(64 * (top - 1), getRandomSpeed(), Spawns.LOG);
+                new Row(64 * top, getRandomSpeed(), Spawns.LOG);
+                top = -2;
+            }
+            else if (type == 1) //Generate Road
+            {
+                new Row(64 * (top-2), getRandomSpeed(), Spawns.CAR);
+                new Row(64 * (top-1), getRandomSpeed(), Spawns.CAR);
+                new Row(64 * 0, getRandomSpeed(), Spawns.CAR);
+                top = -2;
+            }
+            else if (type == 2) //Generate Safe spot
+            {
+                new Row(64 * 0, 0f, Spawns.FREESPACE);
+                top = 0;
+            }
+
         }
 
 
@@ -99,6 +137,41 @@ namespace frogger
             // TODO: Unload any non ContentManager content here
         }
 
+
+        protected void reset()
+        {
+            ResetElapsedTime();
+            player.playerReset();
+            generateNewLevel();
+        }
+
+
+
+        /// <summary>
+        /// Checks the height to see if the view needs to be moved up
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected  void checkHeight()
+        {
+            if (player.getPosition().Y < height / 2)
+            {
+                //shift everything downward and create a new row
+                //and delete the last row
+                for (int i = 0; i < Row.allRows.Count; i++)
+                {
+                    Row.allRows[i].setPosition(Row.allRows[i].getPosition() + new Vector2(0, 64));
+                }
+                player.setPosition(player.getPosition() + new Vector2(0, 64));
+                //randomly generate a row
+                //new Row(0, 1, Spawns.LOG);
+                top++;
+                if (top > 0)
+                {
+                    generateChunk();
+                }
+            }
+        }
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -114,34 +187,19 @@ namespace frogger
             // TODO: Add your update logic here
             for (int i = 0; i < Row.allRows.Count; i++)
             {
-                /*
-                for (int j = 0; j < allRows[i].objects.Count; j++)
-                {
-                    allRows[i].objects[j].update(elapsedTime);
-                }
-                */
                 Row.allRows[i].update(elapsedTime);
             }
             player.update(elapsedTime);
             base.Update(gameTime);
 			//So here we should check if the player has reached a certain height
-            if (player.getPosition().Y < height / 2)
-            {
-                //shift everything downward and create a new row
-                //and delete the last row
-                for (int i = 0; i < Row.allRows.Count; i++)
-                {
-                    Row.allRows[i].setPosition(Row.allRows[i].getPosition() + new Vector2(0, 64));             
-                }
-                player.setPosition(player.getPosition() + new Vector2(0, 64));
-                //randomly generate a row
-                new Row(0, 1 , Spawns.LOG);
-            }
-            if (player.getPosition().X > width)
+            checkHeight();
+            
+            if (player.getPosition().X > width || player.isDead())
             {
                 //player just died
-                player.playerReset();
+                reset();
             }
+            
         }
 
         /// <summary>
@@ -161,8 +219,8 @@ namespace frogger
             player.draw(this.spriteBatch);
             //draw score and lives
             //use the difference at the bottom of the screen for this
-            spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, (height-30)), Color.Red);
-            spriteBatch.DrawString(font, "Lives Remaining: " + lives, new Vector2(200, (height-30)), Color.Red);
+            spriteBatch.DrawString(font, "Score: " + (player.getNumSteps() * 5), new Vector2(0, (height-30)), Color.Red);
+            spriteBatch.DrawString(font, "Lives Remaining: " + player.getLives(), new Vector2(200, (height-30)), Color.Red);
             spriteBatch.End();
             base.Draw(gameTime);
             
