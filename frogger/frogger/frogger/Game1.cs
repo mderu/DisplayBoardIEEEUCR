@@ -189,6 +189,7 @@ namespace frogger
             {
                 Row.allRows[i].update(elapsedTime);
             }
+
             player.update(elapsedTime);
             base.Update(gameTime);
 			//So here we should check if the player has reached a certain height

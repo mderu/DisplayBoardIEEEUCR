@@ -30,26 +30,34 @@ namespace frogger
             }
             //Here we set up the row so it is already populated
             //This one is optimized for cars
-            for (int i = Game1.rand.Next() % 250; i < Game1.width; i += Game1.rand.Next() % 250 + 64 * 2)
+            //don't spawn any objects if its a safe row
+            if (type != Spawns.FREESPACE)
             {
-                objects.Add(new Object(i, y));
-                setObjectSprite();
+                for (int i = Game1.rand.Next() % 250; i < Game1.width; i += Game1.rand.Next() % 250 + 64 * 2)
+                {
+                    objects.Add(new Object(i, y));
+                    setObjectSprite();
+                }
             }
 
         }
         private void addObject()
         {
-            if (objects.Count == 0
-                ||
-                (speed > 0 && objects[objects.Count - 1].getPosition().X > 0)
-                ||
-                 (speed < 0 && objects[objects.Count - 1].getPosition().X + objects[objects.Count - 1].getWidth() > Game1.getWidth()))
+            if (speed != 0)
             {
-                objects.Add(new Object(speed < 0 ? Game1.getWidth() : 0, (int)position.Y));
-                setObjectSprite();
-                objects[objects.Count - 1].moveBy(-objects[objects.Count - 1].getWidth(), 0);
+                if (objects.Count == 0
+                    ||
+                    (speed > 0 && objects[objects.Count - 1].getPosition().X > 0)
+                    ||
+                     (speed < 0 && objects[objects.Count - 1].getPosition().X + objects[objects.Count - 1].getWidth() > Game1.getWidth()))
+                {
+                    objects.Add(new Object(speed < 0 ? Game1.getWidth() : 0, (int)position.Y));
+                    setObjectSprite();
+                    objects[objects.Count - 1].moveBy(-objects[objects.Count - 1].getWidth(), 0);
+                }
             }
         }
+
         public override void update(float time = .01666f)
         {
             bool createObject = true;
@@ -159,6 +167,11 @@ namespace frogger
         public bool isWater()
         {
             return type <= Spawns.LOG;
+        }
+
+        public bool isSafe()
+        {
+            return type <= Spawns.CAR;
         }
 
         private void setObjectSprite()

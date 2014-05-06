@@ -19,6 +19,8 @@ namespace frogger
         protected bool dead;
         protected int lives;
         protected int numSteps;
+        protected int lastSaveRow;
+
 
         public Player(Vector2 position, int startingLives)
             : base(position)
@@ -26,6 +28,7 @@ namespace frogger
             wKeyUp = true;
             dead = false;
             numSteps = 0;
+            lastSaveRow = 5;
             lives = startingLives;
         }
 
@@ -39,6 +42,10 @@ namespace frogger
             {
                 if (Row.allRows[i].objectInRow(this))
                 {
+                    if (Row.allRows[i].isSafe())
+                    {
+                        lastSaveRow = i;
+                    }
                     bool hitObject = false;
                     for (int j = 0; j < Row.allRows[i].objects.Count(); j++ )
                     {
@@ -84,6 +91,7 @@ namespace frogger
                     {
                         this.moveBy(Row.allRows[i].getSpeed() * (int)(time * 60f), 0);
                     }
+                    
                 }
             }
             KeyboardState kb = Keyboard.GetState();
@@ -113,7 +121,7 @@ namespace frogger
         public void playerReset()
         {
             //reset player position
-            position.Y = 64 * 5;
+            position.Y = 64 * lastSaveRow;
             position.X = 200;
             lives--;
             dead = false;
@@ -134,7 +142,10 @@ namespace frogger
             return dead;
         }
 
-
+        public void setlastSaveRow(int row)
+        {
+            lastSaveRow = row;
+        }
     }
 
 
